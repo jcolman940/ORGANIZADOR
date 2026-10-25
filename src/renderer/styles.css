@@ -482,3 +482,80 @@ dialog::backdrop {
   font-size: 12px;
   white-space: nowrap;
 }
+
+/* Editor de tareas */
+.task-editor fieldset {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.task-editor legend {
+  font-size: 13px;
+  color: var(--muted);
+  padding: 0 4px;
+}
+
+.form label.inline,
+.form label.day-check {
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  color: var(--text);
+  font-size: 14px;
+}
+
+.days-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-left: 22px;
+}
+
+.days-row .btn {
+  font-size: 12px;
+  padding: 3px 8px;
+}
+
+.step-edit {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 8px;
+}
+
+.step-index {
+  font-size: 13px;
+  color: var(--muted);
+  width: 18px;
+  padding-top: 24px;
+  text-align: right;
+}
+
+.step-fields {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.step-buttons {
+  display: flex;
+  flex-direction: column;
+  padding-top: 18px;
+}
+
+.form textarea.mono {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  resize: vertical;
+}
+
+dialog:has(.task-editor) {
+  width: min(680px, 92vw);
+}
