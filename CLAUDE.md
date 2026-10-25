@@ -1,6 +1,6 @@
 # Calendario + Organizador de tareas
 
-App personal de escritorio para Windows. Todavía no hay código: estamos en la etapa de diseño de la interfaz en Figma.
+App personal de escritorio para Windows, hecha con Electron, React y TypeScript. Diseño: docs/superpowers/specs/2026-10-25-organizador-design.md.
 
 ## Objetivo
 
@@ -26,11 +26,22 @@ Los pasos de cada tarea todavía no están definidos; hay que pedírselos al usu
 - **Primero el diseño en Figma, después el código.** El proyecto también sirve para que el usuario aprenda Figma, así que conviene explicar qué se hace en Figma y por qué, no solo hacerlo.
 - Figma se conecta con el plugin oficial `figma@claude-plugins-official` (instalado a nivel de usuario). El servidor MCP de Figma necesita autorización OAuth con la cuenta del usuario.
 - Cuenta de Figma: plan Starter (gratuito), asiento "View". La documentación de Figma limita el MCP a unas pocas llamadas por mes para ese plan, así que las llamadas al MCP se usan con cuidado: el usuario diseña a mano con guía y el MCP se reserva para revisar el diseño y pasarlo a código. Límites: https://developers.figma.com/docs/figma-mcp-server/rate-limits-access/
-- El stack de la app (Electron, Tauri, etc.) todavía no está decidido.
 - El usuario escribe en español rioplatense; responder en español.
 
-## Próximos pasos
+## Comandos
 
-1. Verificar que las herramientas MCP de Figma respondan (cuenta autorizada).
-2. Crear el archivo de Figma del proyecto y diseñar las pantallas: vista de calendario, lista de tareas y tarea desplegada con pasos y bloques de código.
-3. Recién con el diseño aprobado, elegir el stack e implementar, incluido el inicio automático con Windows.
+- `npm run dev`: abre la app en modo desarrollo. Usa la carpeta de datos `%APPDATA%\Organizador-dev`, separada de la real.
+- `npm test`: corre los tests (Vitest).
+- `npm run typecheck`: chequeo de tipos.
+- `npm run dist`: genera el instalador en `dist/Organizador Setup <versión>.exe`.
+
+## Arquitectura
+
+- `src/shared`: lógica pura (fechas, repetición, operaciones sobre los datos), testeada sin Electron.
+- `src/main`: ventana, guardado en `%APPDATA%\Organizador\data.json` (cola, fsync y rename atómico), flush antes de cerrar, arranque con Windows.
+- `src/renderer`: interfaz en React. Los estilos y colores del diseño de Figma están en `styles.css`.
+
+## Pendiente
+
+- Pantallas de Tareas y Tablero en Figma (se programaron sin diseño, siguiendo el estilo del calendario).
+- Notificaciones de eventos próximos.
