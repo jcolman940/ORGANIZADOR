@@ -4,6 +4,7 @@ import { Sidebar, type View } from './components/Sidebar'
 import { TaskEditor } from './components/TaskEditor'
 import { useAppData } from './state/useAppData'
 import { useToday } from './state/useToday'
+import { BoardView } from './views/BoardView'
 import { CalendarView } from './views/CalendarView'
 import { TasksView } from './views/TasksView'
 
@@ -24,6 +25,8 @@ export function App() {
           <CalendarView data={data} update={update} today={today} />
         ) : view === 'tasks' ? (
           <TasksView data={data} update={update} today={today} onEdit={setEditing} />
+        ) : view === 'board' ? (
+          <BoardView data={data} update={update} />
         ) : null}
       </main>
       {data && editing !== undefined ? (
