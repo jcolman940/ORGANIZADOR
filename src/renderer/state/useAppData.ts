@@ -3,7 +3,9 @@ import type { AppData } from '@shared/types'
 
 const SAVE_DELAY_MS = 300
 
-export function useAppData(): { data: AppData | null; update: (fn: (d: AppData) => AppData) => void } {
+export type Update = (fn: (d: AppData) => AppData) => void
+
+export function useAppData(): { data: AppData | null; update: Update } {
   const [data, setData] = useState<AppData | null>(null)
   const latest = useRef<AppData | null>(null)
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null)
