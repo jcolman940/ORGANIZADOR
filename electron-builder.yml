@@ -15,3 +15,4 @@ nsis:
   allowToChangeInstallationDirectory: true
   createDesktopShortcut: true
   shortcutName: Organizador
+  include: build/installer.nsh

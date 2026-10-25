@@ -1,8 +1,9 @@
-import { useEffect, useRef, type ReactNode } from 'react'
+import { useEffect, useRef, type MouseEvent, type ReactNode } from 'react'
 
-/** <dialog> modal nativo; Escape o clic afuera lo cierran. */
+/** <dialog> modal nativo; Escape o un clic afuera lo cierran. */
 export function Modal({ title, onClose, children }: { title: string; onClose: () => void; children: ReactNode }) {
   const ref = useRef<HTMLDialogElement>(null)
+  const pressedOutside = useRef(false)
 
   useEffect(() => {
     const el = ref.current
@@ -14,6 +15,13 @@ export function Modal({ title, onClose, children }: { title: string; onClose: ()
     }
   }, [])
 
+  // El fondo es parte del <dialog>: se mira si el puntero está fuera de su rectángulo.
+  const isOutside = (e: MouseEvent) => {
+    if (e.target !== ref.current) return false
+    const r = ref.current.getBoundingClientRect()
+    return e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom
+  }
+
   return (
     <dialog
       ref={ref}
@@ -22,8 +30,13 @@ export function Modal({ title, onClose, children }: { title: string; onClose: ()
         e.preventDefault()
         onClose()
       }}
+      // Solo cierra si el clic empezó y terminó afuera: arrastrar al seleccionar texto no cuenta.
+      onMouseDown={e => {
+        pressedOutside.current = isOutside(e)
+      }}
       onClick={e => {
-        if (e.target === ref.current) onClose()
+        if (pressedOutside.current && isOutside(e)) onClose()
+        pressedOutside.current = false
       }}
     >
       <h2 className="modal-title">{title}</h2>

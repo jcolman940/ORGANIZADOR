@@ -263,6 +263,7 @@ dialog::backdrop {
 }
 
 .day-number {
+  flex-shrink: 0;
   font-size: 14px;
   font-weight: 600;
 }
@@ -312,6 +313,7 @@ dialog::backdrop {
 }
 
 .more {
+  flex-shrink: 0;
   background: transparent;
   border: 0;
   padding: 0 6px;

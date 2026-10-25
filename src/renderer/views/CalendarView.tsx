@@ -1,14 +1,15 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { fromKey, monthGrid } from '@shared/dates'
 import { deleteEvent, eventsOn, newId, upsertEvent } from '@shared/ops'
 import type { AppData, CalendarEvent } from '@shared/types'
 import { EventChip } from '../components/EventChip'
 import { DayDialog, EventDialog } from '../components/EventDialog'
 import type { Update } from '../state/useAppData'
+import { chipsThatFit } from './chipsThatFit'
 
 const MONTHS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
 const WEEKDAYS = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom']
-const MAX_VISIBLE = 3
+const GRID_GAP = 8
 
 type Open = { kind: 'event'; event: CalendarEvent } | { kind: 'day'; key: string } | null
 
@@ -25,6 +26,20 @@ export function CalendarView({ data, update, today }: { data: AppData; update: U
 
   const newEvent = (key: string) => setOpen({ kind: 'event', event: { id: '', date: key, title: '', type: 'parcial' } })
   const cells = monthGrid(month.year, month.month0)
+  const rows = cells.length / 7
+
+  // Alto real de cada celda, para mostrar solo los eventos que entran sin cortarse.
+  const gridRef = useRef<HTMLDivElement>(null)
+  const [cellHeight, setCellHeight] = useState(0)
+  useEffect(() => {
+    const el = gridRef.current
+    if (!el || typeof ResizeObserver === 'undefined') return
+    const measure = () => setCellHeight((el.clientHeight - GRID_GAP * (rows - 1)) / rows)
+    measure()
+    const ro = new ResizeObserver(measure)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [rows])
 
   return (
     <>
@@ -51,10 +66,11 @@ export function CalendarView({ data, update, today }: { data: AppData; update: U
             <span key={w}>{w}</span>
           ))}
         </div>
-        <div className="grid" style={{ gridTemplateRows: `repeat(${cells.length / 7}, minmax(0, 1fr))` }}>
+        <div ref={gridRef} className="grid" style={{ gridTemplateRows: `repeat(${rows}, minmax(0, 1fr))` }}>
           {cells.map(c => {
             const events = eventsOn(data, c.key)
-            const hidden = events.length - MAX_VISIBLE
+            const visible = chipsThatFit(cellHeight, events.length)
+            const hidden = events.length - visible
             return (
               <div
                 key={c.key}
@@ -63,7 +79,7 @@ export function CalendarView({ data, update, today }: { data: AppData; update: U
                 onClick={() => newEvent(c.key)}
               >
                 <span className="day-number">{c.day}</span>
-                {events.slice(0, MAX_VISIBLE).map(e => (
+                {events.slice(0, visible).map(e => (
                   <EventChip key={e.id} event={e} onClick={() => setOpen({ kind: 'event', event: e })} />
                 ))}
                 {hidden > 0 ? (
