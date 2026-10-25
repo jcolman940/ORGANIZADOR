@@ -1,10 +1,32 @@
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'node:path'
 import { registerIpc } from './ipc'
 
-let mainWindow: BrowserWindow | null = null
+const APP_ID = 'com.julian.organizador'
+const FLUSH_TIMEOUT_MS = 3000
 
-function createWindow(): BrowserWindow {
+// En desarrollo se usa otra carpeta de datos para no tocar los datos reales ni el arranque con Windows.
+if (!app.isPackaged) app.setPath('userData', join(app.getPath('appData'), 'Organizador-dev'))
+app.setAppUserModelId(APP_ID)
+
+let mainWindow: BrowserWindow | null = null
+let quitting = false
+
+/** Pide a la interfaz que guarde lo pendiente y espera a que termine de escribirse en disco. */
+function flushRenderer(win: BrowserWindow, flushDisk: () => Promise<void>): Promise<void> {
+  return new Promise(resolve => {
+    const done = () => {
+      clearTimeout(timeout)
+      ipcMain.removeListener('app:flushed', done)
+      flushDisk().finally(resolve)
+    }
+    const timeout = setTimeout(done, FLUSH_TIMEOUT_MS)
+    ipcMain.once('app:flushed', done)
+    win.webContents.send('app:flush')
+  })
+}
+
+function createWindow(flushDisk: () => Promise<void>): BrowserWindow {
   const win = new BrowserWindow({
     width: 1280,
     height: 800,
@@ -21,6 +43,15 @@ function createWindow(): BrowserWindow {
     }
   })
   win.once('ready-to-show', () => win.show())
+
+  // Antes de cerrar se guarda todo; recién después se destruye la ventana.
+  win.on('close', e => {
+    if (quitting) return
+    e.preventDefault()
+    quitting = true
+    void flushRenderer(win, flushDisk).then(() => win.destroy())
+  })
+
   if (process.env.ELECTRON_RENDERER_URL) win.loadURL(process.env.ELECTRON_RENDERER_URL)
   else win.loadFile(join(__dirname, '../renderer/index.html'))
   return win
@@ -38,8 +69,12 @@ if (!app.requestSingleInstanceLock()) {
   })
 
   app.whenReady().then(() => {
-    registerIpc()
-    mainWindow = createWindow()
+    const { flush } = registerIpc()
+    mainWindow = createWindow(flush)
+    // Al cerrar sesión o apagar Windows: guardar lo que se pueda antes de que corten.
+    mainWindow.on('session-end', () => {
+      if (mainWindow) void flushRenderer(mainWindow, flush)
+    })
   })
 
   app.on('window-all-closed', () => app.quit())

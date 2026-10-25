@@ -684,3 +684,37 @@ dialog:has(.task-editor) {
 .setting small {
   color: var(--muted);
 }
+
+/* Avisos */
+.banner {
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.banner code {
+  font-family: var(--mono);
+  word-break: break-all;
+}
+
+.banner-error {
+  background: var(--parcial-bg);
+  color: var(--parcial-fg);
+}
+
+.banner-warning {
+  background: var(--recordatorio-bg);
+  color: var(--recordatorio-fg);
+}
+
+.load-error {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
+}

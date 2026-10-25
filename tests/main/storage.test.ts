@@ -57,3 +57,27 @@ test('completa campos faltantes con valores por defecto', async () => {
   expect(data.board).toEqual([])
   expect(data.version).toBe(1)
 })
+
+test('reintenta el rename si Windows lo bloquea (EPERM)', async () => {
+  const { rename } = await import('node:fs/promises')
+  let fails = 2
+  const flakyRename = async (a: string, b: string) => {
+    if (fails-- > 0) throw Object.assign(new Error('EPERM'), { code: 'EPERM' })
+    return rename(a, b)
+  }
+  await saveData(file, sample, { rename: flakyRename, retryDelayMs: 1 })
+  expect((await loadData(file, '2026-10-25')).data).toEqual(sample)
+})
+
+test('si el rename falla siempre, saveData rechaza', async () => {
+  const alwaysFail = async () => {
+    throw Object.assign(new Error('EBUSY'), { code: 'EBUSY' })
+  }
+  await expect(saveData(file, sample, { rename: alwaysFail, retryDelayMs: 1 })).rejects.toThrow('EBUSY')
+})
+
+test('un archivo corrupto informa dónde quedó el respaldo', async () => {
+  await writeFile(file, '{nope')
+  const { recoveredFrom } = await loadData(file, '2026-10-25')
+  expect(recoveredFrom).toMatch(/data\.corrupt-\d+\.json$/)
+})
