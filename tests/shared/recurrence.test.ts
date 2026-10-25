@@ -19,3 +19,11 @@ test('fecha específica', () => {
   expect(isDueOn({ kind: 'date', date: '2026-11-03' }, '2026-11-03')).toBe(true)
   expect(isDueOn({ kind: 'date', date: '2026-11-03' }, '2026-11-10')).toBe(false)
 })
+
+test('recurrenceLabel', async () => {
+  const { recurrenceLabel } = await import('@shared/recurrence')
+  expect(recurrenceLabel({ kind: 'weekdays', days: WEEKDAYS_ALL })).toBe('Todos los días')
+  expect(recurrenceLabel({ kind: 'weekdays', days: [4, 0, 1, 2, 3] })).toBe('Lun a Vie')
+  expect(recurrenceLabel({ kind: 'weekdays', days: [1, 3] })).toBe('Mar, Jue')
+  expect(recurrenceLabel({ kind: 'date', date: '2026-11-03' })).toBe('3/11/2026')
+})

@@ -327,3 +327,158 @@ dialog::backdrop {
   gap: 6px;
   margin-bottom: 16px;
 }
+
+/* Tareas */
+.tasks-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.segmented {
+  display: flex;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.segmented button {
+  border: 0;
+  background: transparent;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.segmented button[aria-pressed='true'] {
+  background: var(--nav-active);
+  color: #fff;
+}
+
+.empty-state {
+  color: var(--muted);
+}
+
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.task-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+}
+
+.task-toggle {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  padding: 0;
+}
+
+.chevron {
+  color: var(--muted);
+  width: 12px;
+}
+
+.task-name {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.task.not-due .task-name {
+  color: var(--muted);
+}
+
+.task-recurrence {
+  font-size: 12px;
+  color: var(--muted);
+  background: var(--content-bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 6px;
+}
+
+.task-progress {
+  font-size: 12px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.task-progress.complete {
+  color: var(--success);
+  font-weight: 600;
+}
+
+.task-progress.complete::after {
+  content: ' ✓';
+}
+
+.steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.step {
+  border-top: 1px solid var(--border);
+  padding: 10px 12px 10px 34px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.step.empty {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.step-label {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  cursor: pointer;
+}
+
+.step-label input {
+  margin-top: 3px;
+}
+
+.step.done .step-label span {
+  color: var(--other-month);
+  text-decoration: line-through;
+}
+
+.copy-block {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  margin-left: 24px;
+}
+
+.copy-block pre {
+  flex: 1;
+  margin: 0;
+  background: var(--content-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  white-space: pre-wrap;
+  word-break: break-all;
+  user-select: text;
+}
+
+.copy-btn {
+  font-size: 12px;
+  white-space: nowrap;
+}

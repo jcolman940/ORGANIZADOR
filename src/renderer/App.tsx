@@ -3,6 +3,7 @@ import { Sidebar, type View } from './components/Sidebar'
 import { useAppData } from './state/useAppData'
 import { useToday } from './state/useToday'
 import { CalendarView } from './views/CalendarView'
+import { TasksView } from './views/TasksView'
 
 export function App() {
   const { data, update } = useAppData()
@@ -17,6 +18,8 @@ export function App() {
           <p>Cargando…</p>
         ) : view === 'calendar' ? (
           <CalendarView data={data} update={update} today={today} />
+        ) : view === 'tasks' ? (
+          <TasksView data={data} update={update} today={today} onEdit={() => {}} />
         ) : null}
       </main>
     </div>
