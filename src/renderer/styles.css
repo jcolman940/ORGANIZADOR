@@ -1,0 +1,193 @@
+:root {
+  --sidebar-bg: #1f2937;
+  --nav-active: #374151;
+  --content-bg: #f9fafb;
+  --text: #111827;
+  --muted: #6b7280;
+  --other-month: #9ca3af;
+  --border: #e5e7eb;
+  --today: #2563eb;
+  --success: #15803d;
+  --danger: #b91c1c;
+  --parcial-bg: #fee2e2;
+  --parcial-fg: #b91c1c;
+  --entrega-bg: #dbeafe;
+  --entrega-fg: #1d4ed8;
+  --recordatorio-bg: #fef3c7;
+  --recordatorio-fg: #b45309;
+  --mono: Consolas, 'Cascadia Mono', monospace;
+  font-family: Inter, 'Segoe UI', system-ui, sans-serif;
+  color: var(--text);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+.app {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  height: 100%;
+}
+
+.sidebar {
+  background: var(--sidebar-bg);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebar-title {
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 16px;
+}
+
+.nav-item {
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 12px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.nav-item:hover {
+  background: #2b3645;
+}
+
+.nav-item[aria-current='page'] {
+  background: var(--nav-active);
+}
+
+.nav-bottom {
+  margin-top: auto;
+}
+
+.content {
+  background: var(--content-bg);
+  padding: 40px;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-height: 0;
+}
+
+.view-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.btn {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  border-color: var(--other-month);
+}
+
+.btn-primary {
+  background: var(--today);
+  border-color: var(--today);
+  color: #fff;
+}
+
+.btn-danger {
+  color: var(--danger);
+}
+
+.icon-btn {
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  padding: 4px 8px;
+  cursor: pointer;
+  color: var(--muted);
+}
+
+.icon-btn:hover {
+  background: var(--border);
+  color: var(--text);
+}
+
+.card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.error {
+  color: var(--danger);
+  font-size: 13px;
+  margin: 0;
+}
+
+dialog {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  width: min(560px, 90vw);
+}
+
+dialog::backdrop {
+  background: rgb(17 24 39 / 0.4);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.form label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.form input,
+.form select,
+.form textarea {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 8px;
+  color: var(--text);
+}
+
+.form-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.form-actions .spacer {
+  margin-right: auto;
+}
