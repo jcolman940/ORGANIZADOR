@@ -6,6 +6,7 @@ import { useAppData } from './state/useAppData'
 import { useToday } from './state/useToday'
 import { BoardView } from './views/BoardView'
 import { CalendarView } from './views/CalendarView'
+import { SettingsView } from './views/SettingsView'
 import { TasksView } from './views/TasksView'
 
 export function App() {
@@ -27,7 +28,9 @@ export function App() {
           <TasksView data={data} update={update} today={today} onEdit={setEditing} />
         ) : view === 'board' ? (
           <BoardView data={data} update={update} />
-        ) : null}
+        ) : (
+          <SettingsView />
+        )}
       </main>
       {data && editing !== undefined ? (
         <TaskEditor

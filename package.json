@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "Calendario, tareas y tablero",
   "main": "./out/main/index.js",
-  "directories": {
-    "doc": "docs"
-  },
   "scripts": {
     "dev": "electron-vite dev",
     "build": "electron-vite build",
@@ -13,9 +10,8 @@
     "test": "vitest run",
     "dist": "electron-vite build && electron-builder --win"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Julian Colman",
+  "license": "UNLICENSED",
   "devDependencies": {
     "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.3",
@@ -36,5 +32,6 @@
     "react": "^19.3.1",
     "react-dom": "^19.3.1"
   },
-  "productName": "Organizador"
+  "productName": "Organizador",
+  "private": true
 }

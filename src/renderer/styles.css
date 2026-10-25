@@ -656,3 +656,31 @@ dialog:has(.task-editor) {
   border-style: dashed;
   background: transparent;
 }
+
+/* Ajustes */
+.settings {
+  padding: 16px 20px;
+  max-width: 560px;
+}
+
+.setting {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.setting input {
+  margin-top: 4px;
+  width: 16px;
+  height: 16px;
+}
+
+.setting label {
+  display: block;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.setting small {
+  color: var(--muted);
+}
